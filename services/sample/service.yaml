@@ -1,6 +1,0 @@
-name: sample
-route: /api/sample
-port: 8080
-database: sample
-publishes: []
-consumes: []

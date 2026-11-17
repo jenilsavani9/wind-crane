@@ -1,10 +1,12 @@
 # Wind Crane
 
-Port transport crane installation logistics platform (.NET microservices, PostgreSQL).
+Port transport crane installation logistics platform. Modular monolith on .NET, PostgreSQL, Dapper, Clean Architecture.
 
-- `services/`  one folder per microservice (see `services/_template/README.md`)
-- `gateway/`   API gateway
-- `shared/`    domain-free building blocks
-- `build/`     shared build config and architecture rules
-- `deploy/`    local, charts, pipelines
-- `docs/`      ADRs and event catalogue
+- `WindCrane.Api/`          host: startup, auth setup, SignalR, Hangfire
+- `WindCrane.SharedKernel/` base classes and shared types (no business logic)
+- `WindCrane.Database/`     DbUp runner project; versioned SQL scripts per module in `Scripts/<Module>/`
+- `Identity/`               first module: Domain, Application, Infrastructure, Presentation
+- `docs/`                   architecture decisions
+
+Each new module is a folder at the root with the same four projects as `Identity/`.
+Database changes are SQL scripts only (no migrations). Testing is manual.
