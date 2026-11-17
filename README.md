@@ -8,4 +8,3 @@ Port transport crane installation logistics platform (.NET microservices, Postgr
 - `build/`     shared build config and architecture rules
 - `deploy/`    local, charts, pipelines
 - `docs/`      ADRs and event catalogue
-- `tools/`     scripts (e.g. new-service)
