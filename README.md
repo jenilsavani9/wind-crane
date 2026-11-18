@@ -3,7 +3,7 @@
 Port transport crane installation logistics platform. Modular monolith on .NET, PostgreSQL, Dapper, Clean Architecture.
 
 - `WindCrane.Api/`          host: startup, auth setup, SignalR, Hangfire
-- `WindCrane.SharedKernel/` base classes and shared types (no business logic)
+- `WindCrane.Shared/` base classes and shared types (no business logic)
 - `WindCrane.Database/`     DbUp runner project; versioned SQL scripts per module in `Scripts/<Module>/`
 - `Identity/`               first module: Domain, Application, Infrastructure, Presentation
 - `docs/`                   architecture decisions
