@@ -3,9 +3,6 @@
 Port transport crane installation logistics platform.
 Modular monolith on .NET 10, PostgreSQL and Angular, Clean Architecture.
 
-Only the **folder structure** of the Clean Architecture Solution Template is used
-(`dotnet new ca-sln -cf angular -db postgresql`). The template's code is not included; it is rewritten as we build.
-
 Dependencies point inward: Web and Infrastructure -> Application -> Domain. Domain depends on nothing.
 
 ## Folder guide
@@ -58,6 +55,14 @@ WindCrane.slnx                    the solution file that lists all projects
 dotnet build WindCrane.slnx
 dotnet run --project src/Web
 ```
+
+Dummy login (in-memory users `admin` / `admin123` and `driver` / `driver123`, fake token):
+
+```bash
+curl -X POST http://localhost:5289/api/auth/login -H "Content-Type: application/json" -d '{"username":"admin","password":"admin123"}'
+```
+
+To add a route: create a class in `src/Web/Endpoints/` that implements `IEndpointGroup` (see `Auth.cs`); it is found automatically.
 
 Angular client (separate dev server, proxies `/api` to the API on http://localhost:5289):
 
