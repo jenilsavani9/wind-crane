@@ -1,0 +1,14 @@
+<header>
+  <nav>
+    <ul>
+      <li><a class="nav-brand" [routerLink]="['/']">Wind Crane</a></li>
+    </ul>
+    <ul>
+      <li><a [routerLink]="['/']" [routerLinkActive]="['pico-active']" [routerLinkActiveOptions]="{ exact: true }">Home</a></li>
+    </ul>
+    <ul>
+      <li aria-hidden="true" class="nav-separator"></li>
+      <li><app-theme-toggle /></li>
+    </ul>
+  </nav>
+</header>

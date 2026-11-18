@@ -3,6 +3,7 @@
   <PropertyGroup>
     <RootNamespace>WindCrane.Web</RootNamespace>
     <AssemblyName>WindCrane.Web</AssemblyName>
+    <SpaRoot>ClientApp\</SpaRoot>
   </PropertyGroup>
 
   <ItemGroup>
@@ -10,9 +11,27 @@
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
+  <!-- Keep the Angular app out of the .NET compile and build inputs -->
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
-    <PackageReference Include="Scalar.AspNetCore" />
+    <Compile Remove="ClientApp\**" />
+    <Content Remove="ClientApp\**" />
+    <EmbeddedResource Remove="ClientApp\**" />
+    <None Remove="ClientApp\**" />
   </ItemGroup>
 
+  <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
+    <!-- As part of publishing, build the Angular app in production mode -->
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --configuration production" />
+
+    <!-- Include the built files in the publish output -->
+    <ItemGroup>
+      <DistFiles Include="$(SpaRoot)dist\browser\**;" />
+      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+        <RelativePath>wwwroot\%(RecursiveDir)%(FileName)%(Extension)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+  </Target>
 </Project>
