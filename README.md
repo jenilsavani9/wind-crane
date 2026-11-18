@@ -1,34 +1,41 @@
 # Wind Crane
 
-Port transport crane installation logistics platform. Modular monolith on .NET, PostgreSQL, Dapper, Clean Architecture.
+Port transport crane installation logistics platform. Modular monolith on .NET 10, PostgreSQL, Dapper, Clean Architecture.
+Folder layout follows the eShopOnWeb reference project.
 
-- `WindCrane.Api/`          host: startup, auth setup, SignalR, Hangfire
-- `WindCrane.Shared/` base classes and shared types (no business logic)
-- `WindCrane.Database/`     DbUp runner project; versioned SQL scripts per module in `Scripts/<Module>/`
-- `Identity/`               first module: Domain, Application, Infrastructure, Presentation
-- `docs/`                   architecture decisions
+```
+src/
+  ApplicationCore/   business core, no dependencies
+    Constants/  Entities/<Name>Aggregate/  Exceptions/  Extensions/  Interfaces/  Services/<Feature>/  Results/
+  Infrastructure/    technical details (references ApplicationCore)
+    Data/  Identity/  Logging/  Services/  Dependencies.cs
+  PublicApi/         HTTP endpoints, one folder per resource (references ApplicationCore, Infrastructure)
+    AuthEndpoints/  Middleware/  Program.cs
+  Database/          DbUp runner; versioned SQL scripts in Scripts/<Module>/
+docs/                architecture decisions
+Directory.Packages.props   one place for NuGet package versions
+global.json                pins the .NET SDK
+```
 
-Each new module is a folder at the root with the same four projects as `Identity/`.
-Database changes are SQL scripts only (no migrations). Testing is manual.
-
-## Run (dummy authentication)
+## Run
 
 ```bash
 dotnet build WindCrane.slnx
-dotnet run --project WindCrane.Api
+dotnet run --project src/PublicApi
 # POST /api/auth/login  {"username":"admin","password":"admin123"}
 ```
 
-Run database scripts:
+Database scripts:
 
 ```bash
-dotnet run --project WindCrane.Database -- "Host=localhost;Database=windcrane;Username=postgres;Password=..."
+dotnet run --project src/Database -- "Host=localhost;Database=windcrane;Username=postgres;Password=..."
 ```
 
-Authentication is a placeholder: in-memory users and a fake token. Real login (Dapper stores, password hashing, authenticator code, JWT) comes next.
+Authentication is a placeholder (in-memory users, fake token). Testing is manual; database changes are SQL scripts only.
 
-## Folder rule inside every project
+## Adding a new route
 
-Group files by object or feature (`Users/`, `Authentication/Login/`, `Roles/`), never by technical type in one flat folder.
-`Extensions/` holds the module's wiring code (dependency injection, endpoint registration).
-Each feature in Presentation has its own endpoint class, and `IdentityEndpoints` only registers them.
+1. `ApplicationCore/Services/<Feature>/` : request, response and the service with the logic.
+2. `PublicApi/<Resource>Endpoints/` : one endpoint class, plus one line in that folder's registration class.
+3. If it needs data: add the method to an interface in `ApplicationCore/Interfaces/`, its SQL in `Infrastructure/Data/`, and a script in `src/Database/Scripts/`.
+4. Register any new service in `Infrastructure/Dependencies.cs`.

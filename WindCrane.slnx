@@ -1,11 +1,8 @@
 <Solution>
-  <Folder Name="/Identity/">
-    <Project Path="Identity/WindCrane.Identity.Application/WindCrane.Identity.Application.csproj" />
-    <Project Path="Identity/WindCrane.Identity.Domain/WindCrane.Identity.Domain.csproj" />
-    <Project Path="Identity/WindCrane.Identity.Infrastructure/WindCrane.Identity.Infrastructure.csproj" />
-    <Project Path="Identity/WindCrane.Identity.Presentation/WindCrane.Identity.Presentation.csproj" />
+  <Folder Name="/src/">
+    <Project Path="src/ApplicationCore/ApplicationCore.csproj" />
+    <Project Path="src/Database/Database.csproj" />
+    <Project Path="src/Infrastructure/Infrastructure.csproj" />
+    <Project Path="src/PublicApi/PublicApi.csproj" />
   </Folder>
-  <Project Path="WindCrane.Api/WindCrane.Api.csproj" />
-  <Project Path="WindCrane.Database/WindCrane.Database.csproj" />
-  <Project Path="WindCrane.Shared/WindCrane.Shared.csproj" />
 </Solution>
