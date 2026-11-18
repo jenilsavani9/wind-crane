@@ -42,7 +42,6 @@ src/                              all application code
 └─ Database/                      separate console app that applies SQL scripts to PostgreSQL (DbUp)
    └─ Scripts/<Module>/           versioned SQL files per module, run in order, e.g. 0001_create_identity_schema.sql
 
-docs/adr/                         architecture decision records: what we decided and why
 Directory.Build.props             build settings shared by every project (.NET version, nullable, warnings as errors)
 Directory.Packages.props          one place for NuGet package versions; add a package here when code needs it
 global.json                       pins the .NET SDK version so everyone builds with the same one
