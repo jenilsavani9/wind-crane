@@ -6,25 +6,51 @@ Modular monolith on .NET 10, PostgreSQL and Angular, Clean Architecture.
 Only the **folder structure** of the Clean Architecture Solution Template is used
 (`dotnet new ca-sln -cf angular -db postgresql`). The template's code is not included; it is rewritten as we build.
 
-```
-src/
-  Domain/           no dependencies
-    Common/  Constants/  Entities/  Enums/  Events/  Exceptions/  ValueObjects/
-  Application/      references Domain
-    Common/{Behaviours, Exceptions, Interfaces, Models, Security}
-  Infrastructure/   references Application
-    Data/  Identity/
-  Web/              references Application and Infrastructure
-    Endpoints/  Infrastructure/  Services/  wwwroot/
-    ClientApp/      Angular app (standard Angular CLI project)
-  Database/         DbUp runner; versioned SQL scripts in Scripts/<Module>/
-docs/adr/           architecture decisions
-Directory.Build.props      shared build settings
-Directory.Packages.props   one place for NuGet package versions (add packages when code needs them)
-global.json                pins the .NET SDK
-```
+Dependencies point inward: Web and Infrastructure -> Application -> Domain. Domain depends on nothing.
 
-Dependencies point inward: Web and Infrastructure -> Application -> Domain.
+## Folder guide
+
+```
+src/                              all application code
+│
+├─ Domain/                        the business core; no dependencies on anything else, so rules stay pure
+│  ├─ Common/                     base classes shared by entities (BaseEntity, auditable entity, value object, base event)
+│  ├─ Constants/                  fixed business values, e.g. the 7 role names (SuperAdmin, Driver, ...)
+│  ├─ Entities/                   business objects with their rules, e.g. User, Project, SalesBudget
+│  ├─ Enums/                      fixed lists of values, e.g. ProjectStatus, ProjectType
+│  ├─ Events/                     domain events raised when something important happens, e.g. PoApproved
+│  ├─ Exceptions/                 business rule errors, e.g. a budget cannot be edited after approval
+│  └─ ValueObjects/               small immutable objects compared by value, e.g. Money (amount + currency)
+│
+├─ Application/                   use cases: what the system does; knows Domain, not the database or HTTP
+│  │                              (add one folder per feature here, e.g. Users/Commands, Users/Queries)
+│  └─ Common/                     code shared by all features
+│     ├─ Behaviours/              steps that run around every request: validation, logging, authorization
+│     ├─ Exceptions/              application errors, e.g. validation failed, access forbidden
+│     ├─ Interfaces/              contracts that Infrastructure implements, e.g. IUserRepository, ITokenService
+│     ├─ Models/                  shared result and paging types, e.g. Result, PaginatedList
+│     └─ Security/                attributes and helpers for role checks, e.g. [Authorize(Roles = ...)]
+│
+├─ Infrastructure/                technical details; implements the Application interfaces
+│  ├─ Data/                       PostgreSQL access with Dapper: repositories and SQL
+│  └─ Identity/                   login technology: password hashing, authenticator code, JWT tokens, Entra ID
+│
+├─ Web/                           the HTTP entry point; the only project that runs
+│  ├─ Endpoints/                  one class per feature that defines its routes, e.g. Users, Projects
+│  ├─ Infrastructure/             web plumbing: exception handler, endpoint registration, OpenAPI setup
+│  ├─ Services/                   web-specific services, e.g. the current logged-in user from the request
+│  ├─ wwwroot/                    the built Angular app that the API serves in production
+│  └─ ClientApp/                  the Angular web client (standard Angular CLI project)
+│
+└─ Database/                      separate console app that applies SQL scripts to PostgreSQL (DbUp)
+   └─ Scripts/<Module>/           versioned SQL files per module, run in order, e.g. 0001_create_identity_schema.sql
+
+docs/adr/                         architecture decision records: what we decided and why
+Directory.Build.props             build settings shared by every project (.NET version, nullable, warnings as errors)
+Directory.Packages.props          one place for NuGet package versions; add a package here when code needs it
+global.json                       pins the .NET SDK version so everyone builds with the same one
+WindCrane.slnx                    the solution file that lists all projects
+```
 
 ## Run
 
