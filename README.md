@@ -10,3 +10,19 @@ Port transport crane installation logistics platform. Modular monolith on .NET, 
 
 Each new module is a folder at the root with the same four projects as `Identity/`.
 Database changes are SQL scripts only (no migrations). Testing is manual.
+
+## Run (dummy authentication)
+
+```bash
+dotnet build WindCrane.slnx
+dotnet run --project WindCrane.Api
+# POST /api/auth/login  {"username":"admin","password":"admin123"}
+```
+
+Run database scripts:
+
+```bash
+dotnet run --project WindCrane.Database -- "Host=localhost;Database=windcrane;Username=postgres;Password=..."
+```
+
+Authentication is a placeholder: in-memory users and a fake token. Real login (Dapper stores, password hashing, authenticator code, JWT) comes next.
