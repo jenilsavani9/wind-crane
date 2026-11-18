@@ -1,9 +1,7 @@
+using WindCrane.Identity.Application.Users;
 using WindCrane.Shared;
 
-namespace WindCrane.Identity.Application;
-
-public sealed record LoginRequest(string Username, string Password);
-public sealed record LoginResponse(string Token, string Username, string Role);
+namespace WindCrane.Identity.Application.Authentication.Login;
 
 // Use case: log a user in. Knows nothing about HTTP or the database.
 public sealed class LoginHandler(IUserRepository users, ITokenService tokens)

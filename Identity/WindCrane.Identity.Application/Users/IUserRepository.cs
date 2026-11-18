@@ -1,6 +1,6 @@
-using WindCrane.Identity.Domain;
+using WindCrane.Identity.Domain.Users;
 
-namespace WindCrane.Identity.Application;
+namespace WindCrane.Identity.Application.Users;
 
 public interface IUserRepository
 {

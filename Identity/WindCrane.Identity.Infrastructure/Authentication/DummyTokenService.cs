@@ -1,7 +1,7 @@
-using WindCrane.Identity.Application;
-using WindCrane.Identity.Domain;
+using WindCrane.Identity.Application.Authentication;
+using WindCrane.Identity.Domain.Users;
 
-namespace WindCrane.Identity.Infrastructure;
+namespace WindCrane.Identity.Infrastructure.Authentication;
 
 // DUMMY: not a real JWT. Will be replaced by JWT + refresh token.
 internal sealed class DummyTokenService : ITokenService

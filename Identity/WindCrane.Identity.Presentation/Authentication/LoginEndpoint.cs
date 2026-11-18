@@ -1,22 +1,16 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
-using WindCrane.Identity.Application;
+using WindCrane.Identity.Application.Authentication.Login;
 
-namespace WindCrane.Identity.Presentation;
+namespace WindCrane.Identity.Presentation.Authentication;
 
-public static class IdentityEndpoints
+internal static class LoginEndpoint
 {
-    public static IEndpointRouteBuilder MapIdentityEndpoints(this IEndpointRouteBuilder app)
-    {
-        var group = app.MapGroup("/api/auth");
-
+    public static void Map(RouteGroupBuilder group) =>
         group.MapPost("/login", async (LoginRequest request, LoginHandler handler, CancellationToken ct) =>
         {
             var result = await handler.HandleAsync(request, ct);
             return result.IsSuccess ? Results.Ok(result.Value) : Results.Unauthorized();
         });
-
-        return app;
-    }
 }

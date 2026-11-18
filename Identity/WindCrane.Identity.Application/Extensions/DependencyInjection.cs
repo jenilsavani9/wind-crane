@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using WindCrane.Identity.Application.Authentication.Login;
 
 namespace WindCrane.Identity.Application;
 

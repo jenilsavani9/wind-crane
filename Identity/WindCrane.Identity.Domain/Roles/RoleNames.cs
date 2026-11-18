@@ -1,6 +1,6 @@
-namespace WindCrane.Identity.Domain;
+namespace WindCrane.Identity.Domain.Roles;
 
-public static class Roles
+public static class RoleNames
 {
     public const string SuperAdmin = "SuperAdmin";
     public const string SalesManager = "SalesManager";

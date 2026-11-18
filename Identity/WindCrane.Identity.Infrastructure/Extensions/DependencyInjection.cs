@@ -1,5 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
-using WindCrane.Identity.Application;
+using WindCrane.Identity.Application.Authentication;
+using WindCrane.Identity.Application.Users;
+using WindCrane.Identity.Infrastructure.Authentication;
+using WindCrane.Identity.Infrastructure.Users;
 
 namespace WindCrane.Identity.Infrastructure;
 

@@ -1,4 +1,4 @@
-namespace WindCrane.Identity.Domain;
+namespace WindCrane.Identity.Domain.Users;
 
 public sealed class User
 {

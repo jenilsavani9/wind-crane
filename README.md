@@ -26,3 +26,9 @@ dotnet run --project WindCrane.Database -- "Host=localhost;Database=windcrane;Us
 ```
 
 Authentication is a placeholder: in-memory users and a fake token. Real login (Dapper stores, password hashing, authenticator code, JWT) comes next.
+
+## Folder rule inside every project
+
+Group files by object or feature (`Users/`, `Authentication/Login/`, `Roles/`), never by technical type in one flat folder.
+`Extensions/` holds the module's wiring code (dependency injection, endpoint registration).
+Each feature in Presentation has its own endpoint class, and `IdentityEndpoints` only registers them.
